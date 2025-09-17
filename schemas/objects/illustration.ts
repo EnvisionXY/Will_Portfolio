@@ -5,23 +5,32 @@ const illustration = defineType({
   title: "Illustration",
   type: "object",
   fields: [
-    defineField({ name: "image", type: "image", options: { hotspot: true } }),
-    defineField({ name: "alt", type: "string" }),
-    defineField({ name: "title", type: "string" }),
-    defineField({ name: "text", type: "text" }),
+    // Exact same pattern as your working aboutPhoto field
     defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        layout: "radio",
-        list: [
-          { title: "Bild links / Text rechts", value: "image-left" },
-          { title: "Bild rechts / Text links", value: "image-right" },
-        ],
-      },
-      initialValue: "image-left",
-      validation: (Rule) => Rule.required(),
+      name: "image",
+      title: "Image",
+      type: "image",
+      options: { hotspot: true },
+    }),
+    // Title field for the image
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "text",
+    }),
+    // Optional text field for styling later
+    defineField({
+      name: "text",
+      title: "Text",
+      type: "text",
+    }),
+    // Layout option for left/right positioning
+    defineField({
+      name: "order",
+      title: "Order",
+      type: "number",
+      description: "Order in the carousel (1 = first)",
+      validation: (Rule) => Rule.min(1),
     }),
   ],
 });

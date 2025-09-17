@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "../styles/animations.css";
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lato:wght@400;600&display=swap");
 
 :root {
   --background: #ffffff;
@@ -8,7 +10,19 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  /* Rose Bike – Pickle Green */
+  --color-pickle-dark: #828c5d;
+  --color-pickle-light: #b2bf80;
+
+  /* Crankbrothers Pedals – Orange */
+  --color-crank-orange-1: #f29a2e;
+  --color-crank-orange-2: #d96e30;
+  --color-crank-orange-3: #d95d30;
+
+  /* Typography */
+  --font-heading: "Oswald", system-ui, -apple-system, sans-serif;
+  --font-body: "Lato", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -22,5 +36,33 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Typography - Font Families Only */
+
+/* Base font family setup */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+p,
+body {
+  font-family: var(--font-body);
+}
+
+/* Utility Classes */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
 }

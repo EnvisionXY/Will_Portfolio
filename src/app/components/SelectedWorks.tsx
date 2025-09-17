@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 type Card = {
@@ -13,7 +12,9 @@ type Card = {
 };
 
 export function SelectedWorks({ projects }: { projects: Card[] }) {
-  const { ref, isVisible } = useIntersectionObserver(0.1);
+  const { ref, isIntersecting: isVisible } = useIntersectionObserver({
+    threshold: 0.1,
+  });
   const [hovered, setHovered] = useState<string | null>(null);
 
   if (!projects?.length) return null;
@@ -21,31 +22,26 @@ export function SelectedWorks({ projects }: { projects: Card[] }) {
   return (
     <section id="work" ref={ref} className="py-16 sm:py-20 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.h2
-          className="text-3xl sm:text-4xl md:text-5xl mb-12 sm:mb-16 text-foreground"
-          style={{ fontFamily: "Bebas Neue, sans-serif" }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+        <h2
+          className={`text-5xl text-crank-orange-1 sm:text-6xl md:text-7xl mb-16 sm:mb-20 text-primary font-bold scroll-animate ${
+            isVisible ? "in-view" : ""
+          }`}
+          style={{ fontFamily: "Oswald, sans-serif" }}
         >
-          Selected Works
-        </motion.h2>
+          PROJEKTE
+        </h2>
 
         <div className="space-y-0">
           {projects.map((p, index) => {
             const key = p.slug?.current ?? String(index);
+            const isHoveredItem = hovered === key;
+
             return (
-              <motion.div
+              <div
                 key={key}
-                className="group"
-                initial={{ opacity: 0, y: 30 }}
-                animate={
-                  isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
-                }
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
-                  ease: "easeOut",
+                className={`group scroll-animate ${isVisible ? "in-view" : ""}`}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
                 }}
                 onMouseEnter={() => setHovered(key)}
                 onMouseLeave={() => setHovered(null)}
@@ -57,18 +53,17 @@ export function SelectedWorks({ projects }: { projects: Card[] }) {
                   aria-label={`${p.title} – open project`}
                 >
                   {/* Row */}
-                  <div className="py-6 sm:py-8 border-b border-border last:border-b-0">
+                  <div className="py-8 sm:py-10 border-b border-border last:border-b-0">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6">
                       {/* Title */}
                       <div className="flex-1">
                         <h3
-                          className="text-2xl sm:text-3xl md:text-4xl text-foreground group-hover:text-primary transition-colors duration-200"
+                          className="text-lg sm:text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors duration-200 font-semibold"
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
-                            fontWeight: "bold",
+                            fontFamily: "Oswald, sans-serif",
                           }}
                         >
-                          {p.title}
+                          {p.title.toUpperCase()}
                         </h3>
                       </div>
 
@@ -84,7 +79,7 @@ export function SelectedWorks({ projects }: { projects: Card[] }) {
              transition-colors duration-300 ease-out
              group-hover:border-crank-orange-1"
                               style={{
-                                fontFamily: "Founders Grotesk, sans-serif",
+                                fontFamily: "Lato, sans-serif",
                               }}
                             >
                               {tag}
@@ -94,36 +89,52 @@ export function SelectedWorks({ projects }: { projects: Card[] }) {
                       )}
                     </div>
 
-                    {/* Hover-Description */}
-                    <AnimatePresence>
-                      {hovered === key && p.hoverText && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, y: -10 }}
-                          animate={{ opacity: 1, height: "auto", y: 0 }}
-                          exit={{ opacity: 0, height: 0, y: -10 }}
-                          transition={{
-                            duration: 0.25,
-                            ease: "easeOut",
-                            height: { duration: 0.2 },
+                    {/* Description - Always visible on mobile/tablet, hover on desktop */}
+                    {p.hoverText && (
+                      <>
+                        {/* Mobile/Tablet version - always visible */}
+                        <div className="block md:hidden mt-4 sm:mt-6">
+                          <p
+                            className="text-sm sm:text-base text-gray-400 leading-relaxed max-w-4xl font-light"
+                            style={{
+                              fontFamily: "Lato, sans-serif",
+                            }}
+                          >
+                            {p.hoverText}
+                          </p>
+                        </div>
+
+                        {/* Desktop version - hover to show */}
+                        <div
+                          className={`hidden md:block overflow-hidden transition-[max-height,opacity,margin-top] duration-400 ease-out ${
+                            isHoveredItem
+                              ? "mt-4 sm:mt-6 opacity-100"
+                              : "mt-0 opacity-0"
+                          }`}
+                          style={{
+                            maxHeight: isHoveredItem ? "200px" : "0px",
                           }}
-                          className="overflow-hidden"
                         >
-                          <div className="pt-4 sm:pt-6">
+                          <div
+                            className={`transition-transform duration-400 ease-out ${
+                              isHoveredItem ? "translate-y-0" : "-translate-y-4"
+                            }`}
+                          >
                             <p
-                              className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-4xl"
+                              className="text-sm sm:text-base text-gray-400 leading-relaxed max-w-4xl font-light"
                               style={{
-                                fontFamily: "Founders Grotesk, sans-serif",
+                                fontFamily: "Lato, sans-serif",
                               }}
                             >
                               {p.hoverText}
                             </p>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
         </div>
