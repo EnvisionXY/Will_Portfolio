@@ -3,8 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lato:wght@400;600&display=swap");
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Force dark mode colors */
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -26,11 +27,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Force dark mode - override light mode preference */
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+/* Ensure dark mode always applies */
+html {
+  color-scheme: dark;
 }
 
 body {
