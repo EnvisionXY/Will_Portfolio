@@ -1,28 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Linkedin, Menu, X } from "lucide-react";
-
-const contactLinks = [
-  {
-    name: "E-Mail",
-    href: "mailto:hello@williamblack.design",
-    icon: Mail,
-  },
-  {
-    name: "LinkedIn",
-    href: "https://linkedin.com/in/williamblack",
-    icon: Linkedin,
-  },
-];
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHomePage = pathname === "/";
 
-  const handleSmoothScroll = (targetId: string) => {
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (isHomePage) {
+      // If already on home page, scroll to top
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // Otherwise, let the Link navigate normally
+  };
+
+  const handleNavClick = (targetId: string) => {
+    if (isHomePage) {
+      // Already on home page - just scroll
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      // On another page - navigate to home with hash
+      router.push(`/#${targetId}`);
     }
     setIsMobileMenuOpen(false);
   };
@@ -31,8 +38,13 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-700/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center">
+          {/* Logo - Click to go home or scroll to top */}
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            className="flex items-center hover:opacity-80 transition-opacity duration-200"
+            aria-label="Zur Startseite"
+          >
             <svg
               width="32"
               height="32"
@@ -45,26 +57,26 @@ export function Navigation() {
               />
               <rect fill="#f29a2e" y="44.94" width="70.79" height="70.79" />
             </svg>
-          </div>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <button
-              onClick={() => handleSmoothScroll("work")}
+              onClick={() => handleNavClick("work")}
               className="font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200"
             >
               Projekte
             </button>
 
             <button
-              onClick={() => handleSmoothScroll("about")}
+              onClick={() => handleNavClick("about")}
               className="font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200"
             >
               Über mich
             </button>
 
             <button
-              onClick={() => handleSmoothScroll("footer")}
+              onClick={() => handleNavClick("contact")}
               className="font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200"
             >
               Kontakt
@@ -93,44 +105,25 @@ export function Navigation() {
         >
           <div className="pt-4 pb-6 space-y-4 border-t border-neutral-700/40 mt-4">
             <button
-              onClick={() => handleSmoothScroll("work")}
+              onClick={() => handleNavClick("work")}
               className="block w-full text-left font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200 py-2"
             >
               Projekte
             </button>
 
             <button
-              onClick={() => handleSmoothScroll("about")}
+              onClick={() => handleNavClick("about")}
               className="block w-full text-left font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200 py-2"
             >
               Über mich
             </button>
 
-            {/* Mobile Contact */}
-            <div className="pt-2 border-t border-neutral-700/40">
-              <div className="font-body text-xs text-muted-foreground mb-3 uppercase tracking-wider">
-                Kontakt
-              </div>
-              <div className="space-y-3">
-                {contactLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    target={link.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      link.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="flex items-center space-x-3 font-body text-foreground hover:text-crank-orange-1 transition-colors duration-200 py-1"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <link.icon className="w-4 h-4" />
-                    <span>{link.name}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
+            <button
+              onClick={() => handleNavClick("contact")}
+              className="block w-full text-left font-body text-base text-foreground hover:text-crank-orange-1 transition-colors duration-200 py-2"
+            >
+              Kontakt
+            </button>
           </div>
         </div>
       </div>
