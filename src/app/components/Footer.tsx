@@ -263,14 +263,14 @@ export function Footer({
             </p>
             <div className="flex gap-6">
               <a
-                href="/datenschutz"
+                href="/privacy"
                 className="hover:text-crank-orange-3 transition-colors duration-200"
                 style={{ fontFamily: "Lato, sans-serif" }}
               >
                 Datenschutz
               </a>
               <a
-                href="/impressum"
+                href="/imprint"
                 className="hover:text-crank-orange-3 transition-colors duration-200"
                 style={{ fontFamily: "Lato, sans-serif" }}
               >
