@@ -39,29 +39,64 @@ Ein modernes, interaktives Portfolio mit neuronaler Netzwerk-Visualisierung, ent
 
 ```
 portfolio/
-├── app/
-│   ├── components/
-│   │   ├── Navigation.tsx          # Haupt-Navigation
-│   │   ├── HeroSection.tsx         # Landing-Bereich
-│   │   ├── SelectedWorks.tsx       # Projekt-Showcase
-│   │   ├── AboutSection.tsx        # Über-mich-Sektion
-│   │   ├── Footer.tsx              # Footer mit Kontaktformular
-│   │   ├── StableParticleBackground.tsx  # Neural Network Animation
-│   │   └── PortableText/           # Rich-Text-Komponenten
-│   ├── hooks/
-│   │   └── useIntersectionObserver.ts
-│   ├── page.tsx                    # Hauptseite
-│   └── globals.css                 # Globale Styles
-├── sanity/
-│   ├── lib/
-│   │   ├── client.ts               # Sanity Client
-│   │   ├── image.ts                # Bildverarbeitung
-│   │   └── queries.ts              # GROQ Queries
-│   └── schemas/
-│       ├── settings.ts             # Website-Einstellungen
-│       ├── project.ts              # Projekt-Schema
-│       └── illustration.ts         # Bild-Schema
-└── public/
+├── src/
+│   ├── app/
+│   │   ├── (site)/                    # Main site routes
+│   │   ├── components/
+│   │   │   ├── Navigation.tsx
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── SelectedWorks.tsx
+│   │   │   ├── AboutSection.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── StableParticleBackground.tsx
+│   │   │   └── PortableText/
+│   │   ├── cv/                        # CV route
+│   │   ├── hooks/
+│   │   │   └── useIntersectionObserver.ts
+│   │   ├── imprint/                   # Impressum
+│   │   ├── privacy/                   # Datenschutz
+│   │   ├── project/                   # Project detail pages
+│   │   ├── studio/                    # Sanity Studio
+│   │   │   ├── [[...index]]/
+│   │   │   └── layout.tsx
+│   │   ├── styles/
+│   │   │   └── animations.css
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   └── sanity/
+│       ├── lib/
+│       │   ├── client.ts
+│       │   ├── image.ts
+│       │   └── queries.ts
+│       └── schemas/
+│           ├── objects/
+│           │   └── illustration.ts
+│           ├── index.ts
+│           ├── project.ts
+│           ├── settings.ts
+│           └── tags.ts
+├── public/
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── Logo_Entwurf.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── .env.local
+├── .gitignore
+├── deskStructure.ts
+├── eslint.config.mjs
+├── jira-test.txt
+├── next.config.ts
+├── next-env.d.ts
+├── package.json
+├── postcss.config.mjs
+├── README.md
+├── sanity.config.ts
+├── tsconfig.json
+└── tailwind.config.ts
 ```
 
 ## 🚀 Installation & Setup
@@ -284,3 +319,4 @@ Bei Fragen oder Problemen:
 **Version**: 1.0.0  
 **Last Updated**: Januar 2025  
 **Status**: Production Ready 🚀
+
