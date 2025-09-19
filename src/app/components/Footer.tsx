@@ -9,9 +9,10 @@ import {
   Instagram,
   Send,
   CheckCircle,
+  AlertCircle,
   type LucideIcon,
 } from "lucide-react";
-import { client } from "../../../sanity/lib/client";
+import emailjs from "@emailjs/browser";
 
 export function Footer({
   email = "william@willblack.de",
@@ -31,24 +32,32 @@ export function Footer({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     try {
-      await client.create({
-        _type: "contactSubmission",
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        submittedAt: new Date().toISOString(),
-      });
+      await emailjs.send(
+        "service_u19x508",
+        "template_3vpl24p",
+        {
+          name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        "sPoZTYy7w5DoYHeSG"
+      );
 
       setIsSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("Email failed:", error);
+      setError(
+        "Nachricht konnte nicht gesendet werden. Bitte versuche es erneut."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -100,7 +109,7 @@ export function Footer({
   );
 
   return (
-    <footer className="relative z-10">
+    <footer id="contact" className="relative z-10">
       {/* Contact Section */}
       <section className="py-24 sm:py-32 lg:py-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -122,8 +131,6 @@ export function Footer({
                   deinen Ideen zu hören.
                 </p>
               </div>
-
-              {/* Email Contact - Remove since it's now in socials */}
 
               {/* Social Links */}
               {socials.length > 0 && (
@@ -169,7 +176,7 @@ export function Footer({
                     className="text-gray-300 mb-8"
                     style={{ fontFamily: "Lato, sans-serif", color: "#B5B5B5" }}
                   >
-                    Vielen Dank! Ich melde mich bald bei Ihnen.
+                    Vielen Dank! Ich melde mich bald bei dir.
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
@@ -181,6 +188,15 @@ export function Footer({
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-8">
+                  {error && (
+                    <div className="flex items-center gap-2 text-red-400 bg-red-400/10 p-4 rounded-lg">
+                      <AlertCircle className="w-5 h-5" />
+                      <span style={{ fontFamily: "Lato, sans-serif" }}>
+                        {error}
+                      </span>
+                    </div>
+                  )}
+
                   <div>
                     <input
                       type="text"
@@ -238,7 +254,7 @@ export function Footer({
         </div>
       </section>
 
-      {/* Legal Footer - No border */}
+      {/* Legal Footer */}
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">

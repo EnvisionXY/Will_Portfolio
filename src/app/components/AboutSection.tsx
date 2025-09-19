@@ -29,15 +29,6 @@ export function AboutSection({
     threshold: 0.2,
   });
 
-  // Debug: Check what data we're receiving
-  console.log("AboutSection props:", {
-    title,
-    aboutContent,
-    photo,
-    principle,
-    pitch,
-  });
-
   const imgSrc = photo
     ? urlFor(photo).width(600).height(800).fit("fillmax").url()
     : undefined;
