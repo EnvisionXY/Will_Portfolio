@@ -24,7 +24,6 @@
   --font-heading: "Oswald", system-ui, -apple-system, sans-serif;
   --font-body: "Lato", system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-body);
-  --font-mono: var(--font-geist-mono);
 }
 
 /* Force dark mode - override light mode preference */
